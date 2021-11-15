@@ -42,3 +42,6 @@ Route::get('/detail/{content_id}', [ContentController::class, 'detail'])->name('
 // 投稿内容を編集
 Route::get('/edit/{content_id}', [ContentController::class, 'edit'])->name('edit');
 Route::post('/update', [ContentController::class, 'update'])->name('update');
+
+// 投稿内容を削除
+Route::post('/delete', [ContentController::class, 'delete'])->name('delete');
