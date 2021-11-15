@@ -36,3 +36,6 @@ Route::post('/save', [ContentController::class, 'save'])->name('save');
 // 投稿内容を全表示
 Route::get('/output', [ContentController::class, 'output'])->name('output');
 
+// 投稿内容の詳細表示
+Route::get('/detail/{content_id}', [ContentController::class, 'detail'])->name('detail');
+

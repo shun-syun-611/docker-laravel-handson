@@ -35,4 +35,15 @@ class ContentController extends Controller
             'items' => $items,
         ]);
     }
+
+    #投稿内容の詳細表示
+    public function detail($content_id)
+    {
+        $content_get_query = Content::select('*');
+        $item = $content_get_query->find($content_id);
+
+        return view('contents.detail', [
+            'item' => $item,
+        ]);
+    }
 }
