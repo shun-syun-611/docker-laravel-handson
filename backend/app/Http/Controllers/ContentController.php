@@ -46,4 +46,25 @@ class ContentController extends Controller
             'item' => $item,
         ]);
     }
+
+    #投稿内容の編集画面を表示
+    public function edit($content_id)
+    {
+        $content_get_query = Content::select('*');
+        $item = $content_get_query->find($content_id);
+
+        return view('contents.edit', [
+            'item' => $item,
+        ]);
+    }
+
+    #投稿内容を更新
+    public function update(Request $request)
+    {
+        $content_get_query = Content::select('*');
+        $content_info = $content_get_query->find($request['id']);
+        $content_info->content = $request['content'];
+        $content_info->save();
+        return redirect(route('output'));
+    }
 }
