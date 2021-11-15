@@ -22,6 +22,17 @@ class ContentController extends Controller
         $input_content->content = $request['content'];
         $input_content->save();
 
-        return redirect(route('input'));
+        return redirect(route('output'));
+    }
+
+    #投稿内容を全表示
+    public function output()
+    {
+        $contents_get_query = Content::select('*');
+        $items = $contents_get_query->get();
+
+        return view('contents.output', [
+            'items' => $items,
+        ]);
     }
 }

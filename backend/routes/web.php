@@ -32,3 +32,7 @@ Route::get('/input', [ContentController::class, 'input'])->name('input');
 
 // 投稿入力内容を保存
 Route::post('/save', [ContentController::class, 'save'])->name('save');
+
+// 投稿内容を全表示
+Route::get('/output', [ContentController::class, 'output'])->name('output');
+
