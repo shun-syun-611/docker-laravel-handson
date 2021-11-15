@@ -1,3 +1,5 @@
+@extends('layouts.app')
+@section('content')
 <h1>detail（詳細）</h1>
 
 <p>投稿ID: {{$item['id']}}</p>
@@ -9,3 +11,4 @@
     <input type="hidden" name="id" value="{{$item['id']}}">
     <input type="submit" value="削除">
 </form>
+@endsection
