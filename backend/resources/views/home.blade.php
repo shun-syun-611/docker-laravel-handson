@@ -15,7 +15,8 @@
                     @endif
 
                     <!-- {{ __('ログインしました！') }} -->
-                    <a href="{{route('output')}}">タイムタインを見る</a>
+                    <a href="{{route('output')}}">タイムタインを見る</a><br>
+                    <a href="{{route('input')}}">投稿する</a>
                 </div>
             </div>
         </div>

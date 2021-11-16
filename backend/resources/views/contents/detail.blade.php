@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<div class="w-50 mx-auto p-2">
 <h1>detail（詳細）</h1>
 
 <p>投稿ID: {{$item['id']}}</p>
@@ -9,6 +10,7 @@
 <form action="{{route('delete')}}" method="post">
     @csrf
     <input type="hidden" name="id" value="{{$item['id']}}">
-    <input type="submit" value="削除">
+    <input type="submit" value="削除" onclick='return confirm("削除しますか？");'>
 </form>
+</div>
 @endsection
