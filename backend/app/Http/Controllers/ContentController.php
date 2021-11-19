@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 // Contentクラスを使う
 use App\Models\Content;
+use App\Models\ContentImage;
+use Illuminate\Support\Facades\Storage;
 
 class ContentController extends Controller
 {
@@ -22,6 +24,31 @@ class ContentController extends Controller
         $input_content->content = $request['content'];
         $input_content->save();
 
+        if($request->file('file')) {
+            $this->validate($request, [
+                'file' => [
+                    // 空でない
+                    'required',
+                    // アップロードされたファイルか
+                    'file',
+                    // 画像ファイルか
+                    'image',
+                    // 画像のタイプ
+                    'mimes:jpeg,png',
+                ]
+                ]);
+                if($request->file('file')->isValid([])) {
+                    $file_name = $request->file('file')->getClientOriginalName();
+                    $file_path = Storage::putFile('/images', $request->file('file'), 'public');
+
+                    $image_info = new ContentImage();
+                    $image_info->content_id = $input_content->id;
+                    $image_info->file_name = $file_name;
+                    $image_info->file_path = $file_path;
+                    $image_info->save();
+                }
+        }
+
         return redirect(route('output'));
     }
 
@@ -30,6 +57,15 @@ class ContentController extends Controller
     {
         $contents_get_query = Content::select('*');
         $items = $contents_get_query->get();
+
+        foreach ($items as &$item) {
+            $file_path = ContentImage::select('file_path')
+            ->where('content_id', $item['id'])
+            ->first();
+            if(isset($file_path)) {
+                $item['file_path'] = $file_path['file_path'];
+            }
+        }
 
         return view('contents.output', [
             'items' => $items,
@@ -41,6 +77,13 @@ class ContentController extends Controller
     {
         $content_get_query = Content::select('*');
         $item = $content_get_query->find($content_id);
+
+        $file_path = ContentImage::select('file_path')
+        ->where('content_id', $item['id'])
+        ->first();
+        if(isset($file_path)) {
+            $item['file_path'] = $file_path['file_path'];
+        }
 
         return view('contents.detail', [
             'item' => $item,
@@ -74,6 +117,11 @@ class ContentController extends Controller
         $contents_delete_query = Content::select('*');
         $contents_delete_query->find($request['id']);
         $contents_delete_query->delete();
+
+        $content_images_delete_query = ContentImage::select('*');
+        if ($content_images_delete_query->find($request['id'] !== [])) {
+            $content_images_delete_query->delete();
+        }
 
         return redirect(route('output'));
     }

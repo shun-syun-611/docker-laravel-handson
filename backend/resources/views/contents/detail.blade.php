@@ -3,6 +3,10 @@
 <div class="w-50 mx-auto p-2">
 <h1>detail（詳細）</h1>
 
+@if (isset($item['file_path']))
+<img src="{{asset('storage/' . $item['file_path'])}}" alt="{{asset('storage/' . $item['file_path'])}}">
+@endif
+
 <p>投稿ID: {{$item['id']}}</p>
 <p>投稿内容: {{$item['content']}}</p>
 <p>投稿時間: {{$item['created_at']}}</p>
